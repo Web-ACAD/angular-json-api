@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 
-import {WaJsonApiNormalizer} from './normalizer';
+import {WaJsonApiNormalizer} from './normalizer/index';
 
 
 @NgModule({
