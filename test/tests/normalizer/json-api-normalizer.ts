@@ -168,4 +168,33 @@ describe('#Normalizer/WaJsonApiNormalizer', () => {
 
 	});
 
+	describe('normalizeCollection()', () => {
+
+		it('should normalize array of items', () => {
+			expect(normalizer.normalizeCollection({
+				data: [
+					{
+						type: 'user',
+						id: 1,
+						attributes: {
+							name: 'John Doe',
+							email: 'john@doe.com',
+						},
+						relationships: {},
+					},
+				],
+			})).to.be.eql([
+				{
+					type: 'user',
+					id: 1,
+					data: {
+						name: 'John Doe',
+						email: 'john@doe.com',
+					},
+				},
+			]);
+		});
+
+	});
+
 });
