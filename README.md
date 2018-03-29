@@ -70,3 +70,6 @@ export class UserTransformer
     
 }
 ```
+
+Also you can use simply the `normalize()` method and it choose either `normalizeItem()` or `normalizeCollection()`
+automatically.

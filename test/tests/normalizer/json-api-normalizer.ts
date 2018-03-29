@@ -197,4 +197,54 @@ describe('#Normalizer/WaJsonApiNormalizer', () => {
 
 	});
 
+	describe('normalize()', () => {
+
+		it('should normalize item', () => {
+			expect(normalizer.normalize({
+				data: {
+					type: 'user',
+					id: 1,
+					attributes: {
+						name: 'John Doe',
+						email: 'john@doe.com',
+					},
+					relationships: {},
+				},
+			})).to.be.eql({
+				type: 'user',
+				id: 1,
+				data: {
+					name: 'John Doe',
+					email: 'john@doe.com',
+				},
+			});
+		});
+
+		it('should normalize collection', () => {
+			expect(normalizer.normalize({
+				data: [
+					{
+						type: 'user',
+						id: 1,
+						attributes: {
+							name: 'John Doe',
+							email: 'john@doe.com',
+						},
+						relationships: {},
+					},
+				],
+			})).to.be.eql([
+				{
+					type: 'user',
+					id: 1,
+					data: {
+						name: 'John Doe',
+						email: 'john@doe.com',
+					},
+				},
+			]);
+		});
+
+	});
+
 });

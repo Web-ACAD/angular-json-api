@@ -15,6 +15,16 @@ export class WaJsonApiNormalizer
 {
 
 
+	public normalize(data: JsonApiData): TransformedResource|Array<TransformedResource>
+	{
+		if (Array.isArray(data.data)) {
+			return this.normalizeCollection(data);
+		} else {
+			return this.normalizeItem(data);
+		}
+	}
+
+
 	public normalizeItem(data: JsonApiData): TransformedResource
 	{
 		const resourceData = <JsonApiResource>data.data;
