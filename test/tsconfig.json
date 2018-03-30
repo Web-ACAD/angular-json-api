@@ -1,7 +1,9 @@
 {
 	"compilerOptions": {
 		"target": "es5",
-		"removeComments": true
+		"removeComments": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true
 	},
 	"include": [
 		"./tests"

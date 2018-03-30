@@ -7,7 +7,7 @@ export declare interface TransformedResource
 	type: string,
 	id: number|string,
 	data: {[name: string]: any},
-	relationships: {[name: string]: any},
+	relationships: {[name: string]: null|TransformedResource|Array<TransformedResource>},
 }
 
 
