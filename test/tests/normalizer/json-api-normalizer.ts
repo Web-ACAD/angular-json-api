@@ -1,3 +1,5 @@
+import '../../bootstrap';
+
 import {WaJsonApiNormalizer} from '../../../src';
 import {expect} from 'chai';
 
@@ -31,6 +33,7 @@ describe('#Normalizer/WaJsonApiNormalizer', () => {
 					name: 'John Doe',
 					email: 'john@doe.com',
 				},
+				relationships: {},
 			});
 		});
 
@@ -49,7 +52,8 @@ describe('#Normalizer/WaJsonApiNormalizer', () => {
 			})).to.be.eql({
 				type: 'user',
 				id: 1,
-				data: {
+				data: {},
+				relationships: {
 					role: null,
 				},
 			});
@@ -101,11 +105,13 @@ describe('#Normalizer/WaJsonApiNormalizer', () => {
 			})).to.be.eql({
 				type: 'user',
 				id: 1,
-				data: {
+				data: {},
+				relationships: {
 					role: {
 						type: 'role',
 						id: 1,
 						data: {},
+						relationships: {},
 					},
 				},
 			});
@@ -149,17 +155,20 @@ describe('#Normalizer/WaJsonApiNormalizer', () => {
 			})).to.be.eql({
 				type: 'user',
 				id: 1,
-				data: {
+				data: {},
+				relationships: {
 					roles: [
 						{
 							type: 'role',
 							id: 1,
 							data: {},
+							relationships: {},
 						},
 						{
 							type: 'role',
 							id: 2,
 							data: {},
+							relationships: {},
 						},
 					],
 				},
@@ -191,6 +200,7 @@ describe('#Normalizer/WaJsonApiNormalizer', () => {
 						name: 'John Doe',
 						email: 'john@doe.com',
 					},
+					relationships: {},
 				},
 			]);
 		});
@@ -217,6 +227,7 @@ describe('#Normalizer/WaJsonApiNormalizer', () => {
 					name: 'John Doe',
 					email: 'john@doe.com',
 				},
+				relationships: {},
 			});
 		});
 
@@ -241,6 +252,7 @@ describe('#Normalizer/WaJsonApiNormalizer', () => {
 						name: 'John Doe',
 						email: 'john@doe.com',
 					},
+					relationships: {},
 				},
 			]);
 		});

@@ -7,6 +7,7 @@ export declare interface TransformedResource
 	type: string,
 	id: number|string,
 	data: {[name: string]: any},
+	relationships: {[name: string]: any},
 }
 
 
@@ -53,6 +54,7 @@ export class WaJsonApiNormalizer
 			type: data.type,
 			id: data.id,
 			data: {},
+			relationships: {},
 		};
 
 		for (let attrName in data.attributes) {
@@ -66,15 +68,15 @@ export class WaJsonApiNormalizer
 				let relation = data.relationships[relationName];
 
 				if (!relation.data) {
-					resource.data[relationName] = null;
+					resource.relationships[relationName] = null;
 
 				} else if (Array.isArray(relation.data)) {
-					resource.data[relationName] = relation.data.map((singleRelation) => {
+					resource.relationships[relationName] = relation.data.map((singleRelation) => {
 						return this.findRelationship(singleRelation, included);
 					});
 
 				} else {
-					resource.data[relationName] = this.findRelationship(relation.data, included);
+					resource.relationships[relationName] = this.findRelationship(relation.data, included);
 				}
 			}
 		}
