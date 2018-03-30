@@ -4,7 +4,7 @@ export function stringify(token: any): string
 		return token;
 	}
 
-	if (token == null) {
+	if (token === null || typeof token === 'undefined') {
 		return '' + token;
 	}
 

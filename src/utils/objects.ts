@@ -1,4 +1,5 @@
 // from typescript
+/* tslint:disable */
 export function extend(child: any, parent: any): any
 {
 	let extendStatics =
@@ -10,3 +11,4 @@ export function extend(child: any, parent: any): any
 	function __() { this.constructor = child; }
 	child.prototype = parent === null ? Object.create(parent) : (__.prototype = parent.prototype, new __());
 }
+/* tslint:enable */

@@ -26,10 +26,10 @@ describe('#Configuration/ApiConfiguration', () => {
 
 			}
 
-			const config = new Config(loader);
+			const conf = new Config(loader);
 
 			expect(() => {
-				config.initialize();
+				conf.initialize();
 			}).to.throw(Error, 'ApiConfiguration: please, set url.');
 		});
 

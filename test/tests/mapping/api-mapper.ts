@@ -16,7 +16,7 @@ function createMapper(entityTypes: Array<EntityType<any>> = []): ApiMapper
 
 describe('#Mapping/ApiMapper', () => {
 
-	describe('mapItem()', () => {
+	describe('mapItem<User>()', () => {
 
 		it('should throw an error if base data is missing', () => {
 			@Entity({
@@ -38,7 +38,7 @@ describe('#Mapping/ApiMapper', () => {
 			]);
 
 			expect(() => {
-				mapper.mapItem({
+				mapper.mapItem<User>({
 					type: 'user',
 					id: 5,
 					data: {},
@@ -70,7 +70,7 @@ describe('#Mapping/ApiMapper', () => {
 				User,
 			]);
 
-			const user = mapper.mapItem({
+			const user = mapper.mapItem<User>({
 				type: 'user',
 				id: 5,
 				data: {},
@@ -97,14 +97,14 @@ describe('#Mapping/ApiMapper', () => {
 				User,
 			]);
 
-			const user1 = mapper.mapItem({
+			const user1 = mapper.mapItem<User>({
 				type: 'user',
 				id: 1,
 				data: {},
 				relationships: {},
 			});
 
-			const user2 = mapper.mapItem({
+			const user2 = mapper.mapItem<User>({
 				type: 'user',
 				id: 2,
 				data: {},

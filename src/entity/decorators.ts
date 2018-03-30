@@ -13,7 +13,7 @@ export function Entity(options: EntityOptions): any
 	{
 		initEntityMetadata(target);
 		target[API_ENTITY_METADATA].type = options.type;
-	}
+	};
 }
 
 
@@ -23,7 +23,7 @@ export function Id(): any
 	{
 		initEntityMetadata(target.constructor);
 		target.constructor[API_ENTITY_METADATA].id = prop;
-	}
+	};
 }
 
 
@@ -33,7 +33,7 @@ export function Column(columnName?: string): any
 	{
 		initEntityMetadata(target.constructor);
 		target.constructor[API_ENTITY_METADATA].columns[columnName || prop] = prop;
-	}
+	};
 }
 
 
@@ -43,7 +43,7 @@ export function Relationship(include?: string): any
 	{
 		initEntityMetadata(target.constructor);
 		target.constructor[API_ENTITY_METADATA].relationships[include || prop] = prop;
-	}
+	};
 }
 
 

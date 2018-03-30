@@ -17,9 +17,6 @@ export abstract class ApiConfigurator
 	) {}
 
 
-	protected abstract configure(): void;
-
-
 	public initialize(): void
 	{
 		if (this.initialized) {
@@ -65,6 +62,9 @@ export abstract class ApiConfigurator
 
 		return this.mappings[type];
 	}
+
+
+	protected abstract configure(): void;
 
 
 	private check(): void
