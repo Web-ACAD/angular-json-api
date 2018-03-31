@@ -17,59 +17,122 @@ or with yarn
 $ yarn add @webacad/angular-json-api
 ```
 
-## Register module
+## Configure
 
-```typescript
-import {NgModule} from '@angular/core';
-import {WaJsonApiModule} from '@webacad/angular-json-api';
-
-@NgModule({
-    imports: [
-        WaJsonApiModule,
-    ],
-})
-export class AppModule {}
-```
-
-## Normalize data from API response
-
-Working with raw data from [standardized](http://jsonapi.org/) can be a bit tedious. For that reason you can first run 
-your data through the normalizer.
-
-It will look at all the relationships and includes and connect them together for you.
-
-The best way is to write a transformer service, which will take the raw data from http response and transform it into 
-the desired entity. 
+Before being able to use this package, you need to provide your own configuration:
 
 ```typescript
 import {Injectable} from '@angular/core';
-import {WaJsonApiNormalizer, JsonApiData, TransformedResource} from '@webacad/angular-json-api';
-import {User} from './user';
+import {JsonApiConfiguration} from '@webacad/angular-json-api';
 
-@Injectable()
-export class UserTransformer
+export class AppJsonApiConfiguration extends JsonApiConfiguration
 {
     
-    constructor(
-        private normalizer: WaJsonApiNormalizer,
-    ) {}
-    
-    public transformItem(data: JsonApiData): User
+    protected configure(): void
     {
-        const normalizedData = this.normalizer.normalizeItem(data);
-        return new User(normalizedData.id);
-    }
-    
-    public transformCollection(data: JsonApiData): Array<User>
-    {
-        const normalizedData = this.normalizer.normalizeCollection(data);
-        return normalizedData.map((resource: TransformedResource) => {
-            return new User(resource.id);
-        });
+        this.setUrl('https://example.com/api');
     }
     
 }
 ```
 
-Also you can use simply the `normalize()` method and it choose either `normalizeItem()` or `normalizeCollection()`
-automatically.
+You only need to set the url prefix for your API.
+
+## Register the module
+
+```typescript
+import {NgModule} from '@angular/core';
+import {JsonApiModule} from '@webacad/angular-json-api';
+
+import {AppJsonApiConfiguration} from './app-json-api-configuration.service';
+
+@NgModule({
+    imports: [
+        JsonApiModule,
+    ],
+    providers: [
+        AppJsonApiConfiguration,
+    ],
+})
+export class AppModule {}
+```
+
+Don't forgot to provide your custom API configuration.
+
+## Create entities
+
+There are several decorators which you can use to define your entity. They are later used for mapping the data from API 
+to these entities.
+
+```typescript
+import {Entity, Id, Column, Relationship} from '@webacad/angular-json-api';
+import {Role} from './role';
+
+@Entity({
+    type: 'user',
+})
+export class User
+{
+
+    @Id()
+    public readonly id: string;
+    
+    @Column('name')
+    public readonly name: string;
+    
+    @Relationship('roles')
+    public roles: Array<Role>;
+
+}
+```
+
+now you need to register that entity in your app configuration:
+
+```typescript
+import {Injectable} from '@angular/core';
+import {JsonApiConfiguration} from '@webacad/angular-json-api';
+import {Role} from './role';
+import {User} from './user';
+
+export class AppJsonApiConfiguration extends JsonApiConfiguration
+{
+    
+    protected configure(): void
+    {
+        this.setUrl('https://example.com/api');
+        this.registerEntity(Role);
+        this.registerEntity(User);
+    }
+    
+}
+```
+
+It's not necessary to provide any arguments for `@Column()` and `@Relationship()` decorators if the argument is same as 
+the property name they are attached to.
+
+These arguments are names of data keys in the API response.
+
+## JsonApiClient
+
+`JsonApiClient` service is a simple wrapper around the new `HttpClient` from angular.
+
+It takes care of prefixing all of your urls with provided url in the app configuration and mapping the data into your 
+entities.
+
+**Methods:**
+
+* `get<T>(url: string, includes: Array<string> = []): Observable<T>`
+* `post<T>(url: string, body: any, includes: Array<string> = []): Observable<T>`
+* `put(url: string, body: any): Observable<undefined>`
+* `delete(url: string): Observable<undefined>`
+
+**Only `get` and `post` methods returns any data, `put` and `delete` returns `undefined`.**
+
+The `includes` array is a list of relationships you want to include in the response from API.
+
+## Mapping to entities
+
+If you use the methods above for accessing your API, the returned data will be automatically mapped to the correct 
+entity class.
+
+**When using auto mapping, the `constructor` is not called!**
