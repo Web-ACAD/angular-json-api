@@ -18,9 +18,7 @@ export class JsonApiClient
 		private $config: JsonApiConfiguration,
 		private $normalizer: JsonApiNormalizer,
 		private $mapper: JsonApiMapper,
-	) {
-		this.$config.initialize();
-	}
+	) {}
 
 
 	public get<T = any>(url: string, includes: Array<string> = []): Observable<T>

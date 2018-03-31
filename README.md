@@ -17,47 +17,26 @@ or with yarn
 $ yarn add @webacad/angular-json-api
 ```
 
-## Configure
-
-Before being able to use this package, you need to provide your own configuration:
-
-```typescript
-import {Injectable} from '@angular/core';
-import {JsonApiConfiguration} from '@webacad/angular-json-api';
-
-export class AppJsonApiConfiguration extends JsonApiConfiguration
-{
-    
-    protected configure(): void
-    {
-        this.setUrl('https://example.com/api');
-    }
-    
-}
-```
-
-You only need to set the url prefix for your API.
-
 ## Register the module
 
 ```typescript
 import {NgModule} from '@angular/core';
-import {JsonApiModule} from '@webacad/angular-json-api';
+import {JsonApiModule, JsonApiModuleConfiguration} from '@webacad/angular-json-api';
 
-import {AppJsonApiConfiguration} from './app-json-api-configuration.service';
+const api: JsonApiModuleConfiguration = {
+    url: 'https://example.com/api',
+    entities: [],
+};
 
 @NgModule({
     imports: [
-        JsonApiModule,
-    ],
-    providers: [
-        AppJsonApiConfiguration,
+        JsonApiModule.forRoot(api),
     ],
 })
 export class AppModule {}
 ```
 
-Don't forgot to provide your custom API configuration.
+**You must provide the base url to your API**
 
 ## Create entities
 
@@ -86,31 +65,25 @@ export class User
 }
 ```
 
-now you need to register that entity in your app configuration:
-
-```typescript
-import {Injectable} from '@angular/core';
-import {JsonApiConfiguration} from '@webacad/angular-json-api';
-import {Role} from './role';
-import {User} from './user';
-
-export class AppJsonApiConfiguration extends JsonApiConfiguration
-{
-    
-    protected configure(): void
-    {
-        this.setUrl('https://example.com/api');
-        this.registerEntity(Role);
-        this.registerEntity(User);
-    }
-    
-}
-```
-
 It's not necessary to provide any arguments for `@Column()` and `@Relationship()` decorators if the argument is same as 
 the property name they are attached to.
 
 These arguments are names of data keys in the API response.
+
+Last thing is to update the API configuration for your app:
+
+```typescript
+import {Role} from './role';
+import {User} from './user';
+
+const api: JsonApiModuleConfiguration = {
+    url: 'https://example.com/api',
+    entities: [
+        Role,
+        User,
+    ],
+};
+```
 
 ## JsonApiClient
 

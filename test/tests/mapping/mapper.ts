@@ -1,14 +1,13 @@
 import '../../bootstrap';
 
-import {Entity, Id, Column, Relationship, JsonApiEntityMetadataLoader, JsonApiMapper, EntityType} from '../../../src';
-import {MockJsonApiConfiguration} from '../../mocks';
+import {Entity, Id, Column, Relationship, JsonApiConfiguration, JsonApiEntityMetadataLoader, JsonApiMapper, EntityType} from '../../../src';
 import {expect} from 'chai';
 
 
 function createMapper(entityTypes: Array<EntityType<any>> = []): JsonApiMapper
 {
 	const loader = new JsonApiEntityMetadataLoader;
-	const config = new MockJsonApiConfiguration(loader, entityTypes);
+	const config = new JsonApiConfiguration(loader, 'localhost', entityTypes);
 
 	return new JsonApiMapper(config);
 }

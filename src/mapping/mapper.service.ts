@@ -13,9 +13,7 @@ export class JsonApiMapper
 
 	constructor(
 		private $config: JsonApiConfiguration,
-	) {
-		this.$config.initialize();
-	}
+	) {}
 
 
 	public map<T>(data: JsonApiNormalizedResource|Array<JsonApiNormalizedResource>): T|Array<T>
