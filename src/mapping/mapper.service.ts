@@ -1,24 +1,24 @@
 import {Injectable} from '@angular/core';
 
 import {stringify, extend} from '../utils/index';
-import {TransformedResource} from '../normalizer/index';
-import {ApiConfigurator} from '../configuration/index';
+import {JsonApiNormalizedResource} from '../normalizer/index';
+import {JsonApiConfiguration} from '../configuration/index';
 import {EntityType} from '../entity/index';
 
 
 @Injectable()
-export class ApiMapper
+export class JsonApiMapper
 {
 
 
 	constructor(
-		private $config: ApiConfigurator,
+		private $config: JsonApiConfiguration,
 	) {
 		this.$config.initialize();
 	}
 
 
-	public map<T>(data: TransformedResource|Array<TransformedResource>): T|Array<T>
+	public map<T>(data: JsonApiNormalizedResource|Array<JsonApiNormalizedResource>): T|Array<T>
 	{
 		if (Array.isArray(data)) {
 			return this.mapCollection(data);
@@ -28,10 +28,10 @@ export class ApiMapper
 	}
 
 
-	public mapItem<T>(data: TransformedResource): T
+	public mapItem<T>(data: JsonApiNormalizedResource): T
 	{
 		const mapping = this.$config.getMapping(data.type);
-		const entity = this.createProxy(mapping.entityType);
+		const entity = this.createProxy<T>(mapping.entityType);
 
 		entity[mapping.id] = data.id;
 
@@ -58,7 +58,7 @@ export class ApiMapper
 	}
 
 
-	public mapCollection<T>(data: Array<TransformedResource>): Array<T>
+	public mapCollection<T>(data: Array<JsonApiNormalizedResource>): Array<T>
 	{
 		const result: Array<T> = [];
 

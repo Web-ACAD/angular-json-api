@@ -1,1 +1,1 @@
-export {MockApiConfiguration} from './api-configuration';
+export {MockJsonApiConfiguration} from './configuration';

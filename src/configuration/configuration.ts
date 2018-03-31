@@ -1,7 +1,7 @@
-import {ApiEntityMetadata, EntityType, ApiEntityMetadataLoader} from '../entity';
+import {JsonApiEntityMetadata, EntityType, JsonApiEntityMetadataLoader} from '../entity';
 
 
-export abstract class ApiConfigurator
+export abstract class JsonApiConfiguration
 {
 
 
@@ -9,11 +9,11 @@ export abstract class ApiConfigurator
 
 	private url: string;
 
-	private mappings: {[type: string]: ApiEntityMetadata<any>} = {};
+	private mappings: {[type: string]: JsonApiEntityMetadata<any>} = {};
 
 
 	constructor(
-		private $metadataLoader: ApiEntityMetadataLoader,
+		private $metadataLoader: JsonApiEntityMetadataLoader,
 	) {}
 
 
@@ -54,7 +54,7 @@ export abstract class ApiConfigurator
 	}
 
 
-	public getMapping(type: string): ApiEntityMetadata<any>
+	public getMapping(type: string): JsonApiEntityMetadata<any>
 	{
 		if (typeof this.mappings[type] === 'undefined') {
 			throw new Error(`ApiConfiguration: mapping ${type} does not exists.`);

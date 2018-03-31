@@ -1,1 +1,1 @@
-export {ApiMapper} from './api-mapper.service';
+export {JsonApiMapper} from './mapper.service';

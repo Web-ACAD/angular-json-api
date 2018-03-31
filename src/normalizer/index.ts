@@ -1,1 +1,1 @@
-export {WaJsonApiNormalizer, TransformedResource} from './json-api-normalizer.service';
+export {JsonApiNormalizer, JsonApiNormalizedResource} from './normalizer.service';

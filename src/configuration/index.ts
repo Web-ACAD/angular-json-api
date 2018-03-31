@@ -1,1 +1,1 @@
-export {ApiConfigurator} from './api-configuration';
+export {JsonApiConfiguration} from './configuration';

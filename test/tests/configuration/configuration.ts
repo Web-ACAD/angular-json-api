@@ -1,25 +1,25 @@
 import '../../bootstrap';
 
-import {ApiConfigurator, ApiEntityMetadataLoader, Entity, Id} from '../../../src';
-import {MockApiConfiguration} from '../../mocks';
+import {JsonApiConfiguration, JsonApiEntityMetadataLoader, Entity, Id} from '../../../src';
+import {MockJsonApiConfiguration} from '../../mocks';
 import {expect} from 'chai';
 
 
-let loader: ApiEntityMetadataLoader;
-let config: MockApiConfiguration;
+let loader: JsonApiEntityMetadataLoader;
+let config: MockJsonApiConfiguration;
 
 
-describe('#Configuration/ApiConfiguration', () => {
+describe('#Configuration/JsonApiConfiguration', () => {
 
 	beforeEach(() => {
-		loader = new ApiEntityMetadataLoader;
-		config = new MockApiConfiguration(loader);
+		loader = new JsonApiEntityMetadataLoader;
+		config = new MockJsonApiConfiguration(loader);
 	});
 
 	describe('initialize()', () => {
 
 		it('should throw an error if url is not configured', () => {
-			class Config extends ApiConfigurator
+			class Config extends JsonApiConfiguration
 			{
 
 				protected configure(): void {}

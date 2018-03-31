@@ -1,12 +1,12 @@
-import {ApiConfigurator, ApiEntityMetadataLoader, EntityType} from '../../src';
+import {JsonApiConfiguration, JsonApiEntityMetadataLoader, EntityType} from '../../src';
 
 
-export class MockApiConfiguration extends ApiConfigurator
+export class MockJsonApiConfiguration extends JsonApiConfiguration
 {
 
 
 	constructor(
-		metadataLoader: ApiEntityMetadataLoader,
+		metadataLoader: JsonApiEntityMetadataLoader,
 		private entityTypes: Array<EntityType<any>> = [],
 	) {
 		super(metadataLoader);

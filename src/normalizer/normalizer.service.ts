@@ -2,21 +2,21 @@ import {Injectable} from '@angular/core';
 import {JsonApiData, JsonApiResource, JsonApiResourceIdentifier} from '../json-api-schema';
 
 
-export declare interface TransformedResource
+export declare interface JsonApiNormalizedResource
 {
 	type: string,
 	id: number|string,
 	data: {[name: string]: any},
-	relationships: {[name: string]: null|TransformedResource|Array<TransformedResource>},
+	relationships: {[name: string]: null|JsonApiNormalizedResource|Array<JsonApiNormalizedResource>},
 }
 
 
 @Injectable()
-export class WaJsonApiNormalizer
+export class JsonApiNormalizer
 {
 
 
-	public normalize(data: JsonApiData): TransformedResource|Array<TransformedResource>
+	public normalize(data: JsonApiData): JsonApiNormalizedResource|Array<JsonApiNormalizedResource>
 	{
 		if (Array.isArray(data.data)) {
 			return this.normalizeCollection(data);
@@ -26,7 +26,7 @@ export class WaJsonApiNormalizer
 	}
 
 
-	public normalizeItem(data: JsonApiData): TransformedResource
+	public normalizeItem(data: JsonApiData): JsonApiNormalizedResource
 	{
 		const resourceData = <JsonApiResource>data.data;
 		const resource = this.normalizeResource(resourceData, data.included || []);
@@ -35,10 +35,10 @@ export class WaJsonApiNormalizer
 	}
 
 
-	public normalizeCollection(data: JsonApiData): Array<TransformedResource>
+	public normalizeCollection(data: JsonApiData): Array<JsonApiNormalizedResource>
 	{
 		const list = <Array<JsonApiResource>>data.data;
-		const resources: Array<TransformedResource> = [];
+		const resources: Array<JsonApiNormalizedResource> = [];
 
 		for (let i = 0; i < list.length; i++) {
 			resources.push(this.normalizeResource(list[i], data.included || []));
@@ -48,9 +48,9 @@ export class WaJsonApiNormalizer
 	}
 
 
-	private normalizeResource(data: JsonApiResource, included: Array<JsonApiResource>): TransformedResource
+	private normalizeResource(data: JsonApiResource, included: Array<JsonApiResource>): JsonApiNormalizedResource
 	{
-		const resource: TransformedResource = {
+		const resource: JsonApiNormalizedResource = {
 			type: data.type,
 			id: data.id,
 			data: {},
@@ -85,7 +85,7 @@ export class WaJsonApiNormalizer
 	}
 
 
-	private findRelationship(relationship: JsonApiResourceIdentifier, included: Array<JsonApiResource>): TransformedResource
+	private findRelationship(relationship: JsonApiResourceIdentifier, included: Array<JsonApiResource>): JsonApiNormalizedResource
 	{
 		for (let i = 0; i < included.length; i++) {
 			if (included[i].type === relationship.type && included[i].id === relationship.id) {

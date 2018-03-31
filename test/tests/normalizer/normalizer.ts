@@ -1,16 +1,16 @@
 import '../../bootstrap';
 
-import {WaJsonApiNormalizer} from '../../../src';
+import {JsonApiNormalizer} from '../../../src';
 import {expect} from 'chai';
 
 
-let normalizer: WaJsonApiNormalizer;
+let normalizer: JsonApiNormalizer;
 
 
-describe('#Normalizer/WaJsonApiNormalizer', () => {
+describe('#Normalizer/JsonApiNormalizer', () => {
 
 	beforeEach(() => {
-		normalizer = new WaJsonApiNormalizer;
+		normalizer = new JsonApiNormalizer;
 	});
 
 	describe('normalizeItem()', () => {

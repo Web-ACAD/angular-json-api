@@ -1,17 +1,17 @@
 import {NgModule} from '@angular/core';
 
-import {WaJsonApiNormalizer} from './normalizer/index';
-import {ApiClient} from './client/index';
-import {ApiEntityMetadataLoader} from './entity/index';
-import {ApiMapper} from './mapping/index';
+import {JsonApiNormalizer} from './normalizer/index';
+import {JsonApiClient} from './client/index';
+import {JsonApiEntityMetadataLoader} from './entity/index';
+import {JsonApiMapper} from './mapping/index';
 
 
 @NgModule({
 	providers: [
-		WaJsonApiNormalizer,
-		ApiClient,
-		ApiEntityMetadataLoader,
-		ApiMapper,
+		JsonApiNormalizer,
+		JsonApiClient,
+		JsonApiEntityMetadataLoader,
+		JsonApiMapper,
 	],
 })
-export class WaJsonApiModule {}
+export class JsonApiModule {}

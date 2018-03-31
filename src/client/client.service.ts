@@ -3,21 +3,21 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import {map} from 'rxjs/operators';
 
-import {ApiConfigurator} from '../configuration/index';
-import {WaJsonApiNormalizer} from '../normalizer/index';
-import {ApiMapper} from '../mapping/index';
+import {JsonApiConfiguration} from '../configuration/index';
+import {JsonApiNormalizer} from '../normalizer/index';
+import {JsonApiMapper} from '../mapping/index';
 
 
 @Injectable()
-export class ApiClient
+export class JsonApiClient
 {
 
 
 	constructor(
 		private $http: HttpClient,
-		private $config: ApiConfigurator,
-		private $normalizer: WaJsonApiNormalizer,
-		private $mapper: ApiMapper,
+		private $config: JsonApiConfiguration,
+		private $normalizer: JsonApiNormalizer,
+		private $mapper: JsonApiMapper,
 	) {
 		this.$config.initialize();
 	}

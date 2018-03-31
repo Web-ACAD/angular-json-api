@@ -15,10 +15,10 @@ export interface EntityType<T> extends Function
 }
 
 
-export const API_ENTITY_METADATA = '__wa_entity_metadata__';
+export const JSON_API_ENTITY_METADATA = '__wa_json_api_entity_metadata__';
 
 
-export declare interface ApiEntityMetadata<T>
+export declare interface JsonApiEntityMetadata<T>
 {
 	entityType: EntityType<T>,
 	type: string,
@@ -29,20 +29,20 @@ export declare interface ApiEntityMetadata<T>
 
 
 @Injectable()
-export class ApiEntityMetadataLoader
+export class JsonApiEntityMetadataLoader
 {
 
 
-	public getMetadata<T>(entityType: EntityType<T>): ApiEntityMetadata<T>
+	public getMetadata<T>(entityType: EntityType<T>): JsonApiEntityMetadata<T>
 	{
-		if (!entityType[API_ENTITY_METADATA]) {
-			throw new Error(`Api: missing @Entity() decorator on ${stringify(entityType)} class.`);
+		if (!entityType[JSON_API_ENTITY_METADATA]) {
+			throw new Error(`JsonApi: missing @Entity() decorator on ${stringify(entityType)} class.`);
 		}
 
-		const metadata: ApiEntityMetadata<T> = entityType[API_ENTITY_METADATA];
+		const metadata: JsonApiEntityMetadata<T> = entityType[JSON_API_ENTITY_METADATA];
 
 		if (!metadata.id) {
-			throw new Error(`Api: missing @Id() decorator on ${stringify(entityType)} class.`);
+			throw new Error(`JsonApi: missing @Id() decorator on ${stringify(entityType)} class.`);
 		}
 
 		return metadata;

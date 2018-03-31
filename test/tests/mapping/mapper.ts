@@ -1,20 +1,20 @@
 import '../../bootstrap';
 
-import {Entity, Id, Column, Relationship, ApiEntityMetadataLoader, ApiMapper, EntityType} from '../../../src';
-import {MockApiConfiguration} from '../../mocks';
+import {Entity, Id, Column, Relationship, JsonApiEntityMetadataLoader, JsonApiMapper, EntityType} from '../../../src';
+import {MockJsonApiConfiguration} from '../../mocks';
 import {expect} from 'chai';
 
 
-function createMapper(entityTypes: Array<EntityType<any>> = []): ApiMapper
+function createMapper(entityTypes: Array<EntityType<any>> = []): JsonApiMapper
 {
-	const loader = new ApiEntityMetadataLoader;
-	const config = new MockApiConfiguration(loader, entityTypes);
+	const loader = new JsonApiEntityMetadataLoader;
+	const config = new MockJsonApiConfiguration(loader, entityTypes);
 
-	return new ApiMapper(config);
+	return new JsonApiMapper(config);
 }
 
 
-describe('#Mapping/ApiMapper', () => {
+describe('#Mapping/JsonApiMapper', () => {
 
 	describe('mapItem<User>()', () => {
 

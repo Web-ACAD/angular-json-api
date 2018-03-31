@@ -1,16 +1,16 @@
 import '../../bootstrap';
 
-import {ApiEntityMetadataLoader, Entity, Id, Column, Relationship} from '../../../src';
+import {JsonApiEntityMetadataLoader, Entity, Id, Column, Relationship} from '../../../src';
 import {expect} from 'chai';
 
 
-let loader: ApiEntityMetadataLoader;
+let loader: JsonApiEntityMetadataLoader;
 
 
-describe('#Entity/ApiEntityMetadataLoader', () => {
+describe('#Entity/JsonApiEntityMetadataLoader', () => {
 
 	beforeEach(() => {
-		loader = new ApiEntityMetadataLoader;
+		loader = new JsonApiEntityMetadataLoader;
 	});
 
 	describe('getMetadata()', () => {
