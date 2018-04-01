@@ -1,4 +1,4 @@
-import {JsonApiEntityMetadata, EntityType, JsonApiEntityMetadataLoader} from '../entity';
+import {JsonApiEntityMetadata, EntityType, JsonApiEntityMetadataLoader} from '../entity/index';
 
 
 export class JsonApiConfiguration

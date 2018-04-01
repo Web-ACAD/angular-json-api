@@ -21,16 +21,16 @@ $ yarn add @webacad/angular-json-api
 
 ```typescript
 import {NgModule} from '@angular/core';
-import {JsonApiModule, JsonApiModuleConfiguration} from '@webacad/angular-json-api';
+import {JsonApiModule, JsonApiRootModuleConfiguration} from '@webacad/angular-json-api';
 
-const api: JsonApiModuleConfiguration = {
+const apiConfig: JsonApiRootModuleConfiguration = {
     url: 'https://example.com/api',
     entities: [],
 };
 
 @NgModule({
     imports: [
-        JsonApiModule.forRoot(api),
+        JsonApiModule.forRoot(apiConfig),
     ],
 })
 export class AppModule {}
@@ -76,13 +76,39 @@ Last thing is to update the API configuration for your app:
 import {Role} from './role';
 import {User} from './user';
 
-const api: JsonApiModuleConfiguration = {
+const apiConfig: JsonApiRootModuleConfiguration = {
     url: 'https://example.com/api',
     entities: [
         Role,
         User,
     ],
 };
+```
+
+## Child modules
+
+The `entities` array for your configuration has a potential to grow really fast. If you split your model classes into 
+modules, you could register entities in their respective modules too.
+
+```typescript
+import {NgModule} from '@angular/core';
+import {JsonApiModule, JsonApiChildModuleConfiguration} from '@webacad/angular-json-api';
+import {Role} from './role';
+import {User} from './user';
+
+const apiConfig: JsonApiChildModuleConfiguration = {
+    entities: [
+    	Role,
+    	User,
+    ],
+};
+
+@NgModule({
+    imports: [
+        JsonApiModule.forChild(apiConfig),
+    ],
+})
+export class UsersModule {}
 ```
 
 ## JsonApiClient

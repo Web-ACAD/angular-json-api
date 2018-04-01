@@ -1,5 +1,5 @@
 export {JsonApiData, JsonApiResource, JsonApiResourceIdentifier, JsonApiRelationship} from './json-api-schema';
-export {JsonApiModule, JsonApiModuleConfiguration} from './json-api.module';
+export {JsonApiModule} from './json-api.module';
 
 export * from './client/index';
 export * from './configuration/index';
