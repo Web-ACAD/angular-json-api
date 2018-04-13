@@ -120,14 +120,17 @@ entities.
 
 **Methods:**
 
-* `get<T>(url: string, includes: Array<string> = []): Observable<T>`
-* `post<T>(url: string, body: any, includes: Array<string> = []): Observable<T>`
-* `put(url: string, body: any): Observable<undefined>`
-* `delete(url: string): Observable<undefined>`
+* `get<T>(url: string, options: JsonApiRequestOptions = {}): Observable<T>`
+* `post<T>(url: string, body: any, options: JsonApiRequestOptions = {}): Observable<T>`
+* `put(url: string, body: any, options: JsonApiRequestOptions = {}): Observable<undefined>`
+* `delete(url: string, options: JsonApiRequestOptions = {}): Observable<undefined>`
 
 **Only `get` and `post` methods returns any data, `put` and `delete` returns `undefined`.**
 
-The `includes` array is a list of relationships you want to include in the response from API.
+**Options:**
+
+* `includes`: list of relationships you want to include in the response from API
+* `parameters`: additional URL parameters to be send
 
 ## Mapping to entities
 
