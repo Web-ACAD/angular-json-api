@@ -98,8 +98,8 @@ import {User} from './user';
 
 const apiConfig: JsonApiChildModuleConfiguration = {
     entities: [
-    	Role,
-    	User,
+        Role,
+        User,
     ],
 };
 
@@ -131,6 +131,28 @@ entities.
 
 * `includes`: list of relationships you want to include in the response from API
 * `parameters`: additional URL parameters to be send
+
+**Example:**
+
+```typescript
+import {JsonApiClient} from '@webacad/angular-json-api';
+import {Observable} from 'rxjs/Observable';
+import {User} from './user';
+
+export class UsersRepository
+{
+    
+    constructor(
+        private api: JsonApiClient,
+    ) {}
+    
+    public getById(id: number): Observable<User>
+    {
+        return this.api.get<User>(`users/${id}`);
+    }
+    
+}
+```
 
 ## Mapping to entities
 
