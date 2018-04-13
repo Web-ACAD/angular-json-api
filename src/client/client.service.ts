@@ -6,6 +6,7 @@ import {map} from 'rxjs/operators';
 import {JsonApiConfiguration} from '../configuration/index';
 import {JsonApiNormalizer} from '../normalizer/index';
 import {JsonApiMapper} from '../mapping/index';
+import {createUrl} from '../utils/index';
 
 
 @Injectable()
@@ -57,8 +58,13 @@ export class JsonApiClient
 
 	private url(url: string, includes: Array<string> = []): string
 	{
-		const include = includes.length ? `?include=${includes.join(',')}` : '';
-		return `${this.$config.getUrl()}/${url}${include}`;
+		const parameters = {};
+
+		if (includes.length) {
+			parameters['include'] = includes.join(',');
+		}
+
+		return createUrl(`${this.$config.getUrl()}/${url}`, parameters);
 	}
 
 }
