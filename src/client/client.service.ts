@@ -17,15 +17,6 @@ export declare interface JsonApiRequestOptions
 }
 
 
-const defaultRequestOptions: JsonApiRequestOptions = {
-	transform: true,
-};
-
-const defaultDeleteRequestOptions: JsonApiRequestOptions = {
-	transform: false,
-};
-
-
 @Injectable()
 export class JsonApiClient
 {
@@ -39,7 +30,7 @@ export class JsonApiClient
 	) {}
 
 
-	public get<T = any>(url: string, options: JsonApiRequestOptions = defaultRequestOptions): Observable<T>
+	public get<T = any>(url: string, options: JsonApiRequestOptions = {}): Observable<T>
 	{
 		return this.transformPipe<T>(
 			this.$http.get<T>(this.url(url, options)),
@@ -48,7 +39,7 @@ export class JsonApiClient
 	}
 
 
-	public put<T = any>(url: string, body: any, options: JsonApiRequestOptions = defaultRequestOptions): Observable<T>
+	public put<T = any>(url: string, body: any, options: JsonApiRequestOptions = {}): Observable<T>
 	{
 		return this.transformPipe<T>(
 			this.$http.put<T>(this.url(url, options), body),
@@ -57,16 +48,16 @@ export class JsonApiClient
 	}
 
 
-	public delete<T = any>(url: string, options: JsonApiRequestOptions = defaultDeleteRequestOptions): Observable<T>
+	public delete<T = any>(url: string, options: JsonApiRequestOptions = {}): Observable<T>
 	{
 		return this.transformPipe<T>(
 			this.$http.delete<T>(this.url(url, options)),
-			options.transform,
+			typeof options.transform === 'undefined' ? false : options.transform,
 		);
 	}
 
 
-	public post<T = any>(url: string, body: any, options: JsonApiRequestOptions = defaultRequestOptions): Observable<T>
+	public post<T = any>(url: string, body: any, options: JsonApiRequestOptions = {}): Observable<T>
 	{
 		return this.transformPipe<T>(
 			this.$http.post<T>(this.url(url, options), body),
@@ -75,7 +66,7 @@ export class JsonApiClient
 	}
 
 
-	private transformPipe<T>(req: Observable<Object>, transform: boolean): Observable<T>
+	private transformPipe<T>(req: Observable<Object>, transform: boolean = true): Observable<T>
 	{
 		if (transform) {
 			return req.pipe(
