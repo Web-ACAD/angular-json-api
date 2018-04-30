@@ -84,7 +84,7 @@ export class JsonApiClient
 			);
 		}
 
-		return <Observable<T>>req;
+		return <any>req;
 	}
 
 
