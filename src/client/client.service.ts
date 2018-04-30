@@ -13,7 +13,17 @@ export declare interface JsonApiRequestOptions
 {
 	includes?: Array<string>,
 	parameters?: {[name: string]: string},
+	transform?: boolean,
 }
+
+
+const defaultRequestOptions: JsonApiRequestOptions = {
+	transform: true,
+};
+
+const defaultDeleteRequestOptions: JsonApiRequestOptions = {
+	transform: false,
+};
 
 
 @Injectable()
@@ -29,37 +39,52 @@ export class JsonApiClient
 	) {}
 
 
-	public get<T = any>(url: string, options: JsonApiRequestOptions = {}): Observable<T>
+	public get<T = any>(url: string, options: JsonApiRequestOptions = defaultRequestOptions): Observable<T>
 	{
-		return this.$http.get<T>(this.url(url, options)).pipe(
-			map((data) => this.$normalizer.normalize(data)),
-			map((data) => this.$mapper.map<any>(data)),
+		return this.transformPipe<T>(
+			this.$http.get<T>(this.url(url, options)),
+			options.transform,
 		);
 	}
 
 
-	public put(url: string, body: any, options: JsonApiRequestOptions = {}): Observable<undefined>
+	public put<T = any>(url: string, body: any, options: JsonApiRequestOptions = defaultRequestOptions): Observable<T>
 	{
-		return this.$http.put(this.url(url, options), body).pipe(
-			map(() => undefined),
+		return this.transformPipe<T>(
+			this.$http.put<T>(this.url(url, options), body),
+			options.transform,
 		);
 	}
 
 
-	public delete(url: string, options: JsonApiRequestOptions = {}): Observable<undefined>
+	public delete<T = any>(url: string, options: JsonApiRequestOptions = defaultDeleteRequestOptions): Observable<T>
 	{
-		return this.$http.delete(this.url(url, options)).pipe(
-			map(() => undefined),
+		return this.transformPipe<T>(
+			this.$http.delete<T>(this.url(url, options)),
+			options.transform,
 		);
 	}
 
 
-	public post<T = any>(url: string, body: any, options: JsonApiRequestOptions = {}): Observable<T>
+	public post<T = any>(url: string, body: any, options: JsonApiRequestOptions = defaultRequestOptions): Observable<T>
 	{
-		return this.$http.post<T>(this.url(url, options), body).pipe(
-			map((data) => this.$normalizer.normalize(data)),
-			map((data) => this.$mapper.map<any>(data)),
+		return this.transformPipe<T>(
+			this.$http.post<T>(this.url(url, options), body),
+			options.transform,
 		);
+	}
+
+
+	private transformPipe<T>(req: Observable<Object>, transform: boolean): Observable<T>
+	{
+		if (transform) {
+			return req.pipe(
+				map((data) => this.$normalizer.normalize(data)),
+				map((data) => this.$mapper.map<any>(data)),
+			);
+		}
+
+		return <Observable<T>>req;
 	}
 
 

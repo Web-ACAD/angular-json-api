@@ -122,15 +122,14 @@ entities.
 
 * `get<T>(url: string, options: JsonApiRequestOptions = {}): Observable<T>`
 * `post<T>(url: string, body: any, options: JsonApiRequestOptions = {}): Observable<T>`
-* `put(url: string, body: any, options: JsonApiRequestOptions = {}): Observable<undefined>`
-* `delete(url: string, options: JsonApiRequestOptions = {}): Observable<undefined>`
-
-**Only `get` and `post` methods returns any data, `put` and `delete` returns `undefined`.**
+* `put<T>(url: string, body: any, options: JsonApiRequestOptions = {}): Observable<T>`
+* `delete<T>(url: string, options: JsonApiRequestOptions = {}): Observable<T>`
 
 **Options:**
 
 * `includes`: list of relationships you want to include in the response from API
 * `parameters`: additional URL parameters to be send
+* `transform`: (default `true`, `false` for delete requests), if set too `false` you'll get the raw data from angular http client
 
 **Example:**
 
