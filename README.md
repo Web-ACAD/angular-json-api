@@ -164,7 +164,7 @@ export class UsersRepository
 
 ## Custom column types
 
-All the values inserted into columns are just taken from the json data without any change.
+All values inserted into columns are taken from the json data without any change.
 
 Custom column type can be used to transform the raw column value into something else. This can make things like 
 transforming timestamps into `Date` objects really easy.
@@ -185,7 +185,7 @@ const apiConfig = {
     url: '',
     entities: [],
     types: {
-        date: timestampToDate,
+        myCustomDate: timestampToDate,
     },
 };
 ```
@@ -203,7 +203,7 @@ class Article
     public readonly id: string;
 
     @Column({
-        type: 'date',
+        type: 'myCustomDate',
     })
     public readonly createdAt: Date;
 
