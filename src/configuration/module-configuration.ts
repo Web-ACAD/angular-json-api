@@ -1,6 +1,6 @@
 import {InjectionToken} from '@angular/core';
 
-import {JsonApiConfiguration} from './configuration.service';
+import {JsonApiConfiguration, ColumnTypesList} from './configuration.service';
 import {JsonApiEntityMetadataLoader, EntityType} from '../entity/index';
 
 
@@ -8,6 +8,7 @@ export declare interface JsonApiRootModuleConfiguration
 {
 	url: string|(() => string),
 	entities?: Array<EntityType<any>>,
+	types?: ColumnTypesList,
 }
 
 
@@ -33,5 +34,5 @@ export function provideJsonApiRootConfiguration(
 		entityTypes = entityTypes.concat(childConfiguration.entities || []);
 	}
 
-	return new JsonApiConfiguration($metadataLoader, url, entityTypes);
+	return new JsonApiConfiguration($metadataLoader, url, $config.types, entityTypes);
 }

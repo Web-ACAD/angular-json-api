@@ -1,6 +1,12 @@
 import {EntityMetadata, EntityType, JsonApiEntityMetadataLoader} from '../entity/index';
 
 
+export declare interface ColumnTypesList
+{
+	[name: string]: (data: any) => any,
+}
+
+
 export class JsonApiConfiguration
 {
 
@@ -11,6 +17,7 @@ export class JsonApiConfiguration
 	constructor(
 		private $metadataLoader: JsonApiEntityMetadataLoader,
 		private url: string,
+		private columnTypes: ColumnTypesList,
 		entityTypes: Array<EntityType<any>>,
 	) {
 		for (let entityType of entityTypes) {
@@ -32,6 +39,16 @@ export class JsonApiConfiguration
 		}
 
 		return this.mappings[type];
+	}
+
+
+	public getColumnType(type: string): (data: any) => any
+	{
+		if (typeof this.columnTypes[type] === 'undefined') {
+			throw new Error(`ApiConfiguration: column type ${type} does not exists.`);
+		}
+
+		return this.columnTypes[type];
 	}
 
 

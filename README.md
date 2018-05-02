@@ -162,6 +162,54 @@ export class UsersRepository
 }
 ```
 
+## Custom column types
+
+All the values inserted into columns are just taken from the json data without any change.
+
+Custom column type can be used to transform the raw column value into something else. This can make things like 
+transforming timestamps into `Date` objects really easy.
+
+**1. write the transform function:**
+
+```typescript
+function timestampToDate(timestamp: number): Date
+{
+    return new Date(timestamp * 1000);
+}
+```
+
+**2. register type into your app:**
+
+```typescript
+const apiConfig = {
+    url: '',
+    entities: [],
+    types: {
+        date: timestampToDate,
+    },
+};
+```
+
+**3. use in entity:**
+
+```typescript
+@Entity({
+    type: 'article',
+})
+class Article
+{
+
+    @Id()
+    public readonly id: string;
+
+    @Column({
+        type: 'date',
+    })
+    public readonly createdAt: Date;
+
+}
+```
+
 ## Mapping to entities
 
 If you use the methods above for accessing your API, the returned data will be automatically mapped to the correct 

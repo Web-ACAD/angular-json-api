@@ -22,6 +22,7 @@ export declare interface ColumnMetadata
 {
 	name: string,
 	property: string,
+	type: string|null,
 }
 
 

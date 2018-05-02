@@ -4,10 +4,10 @@ import {Entity, Id, Column, Relationship, JsonApiConfiguration, JsonApiEntityMet
 import {expect} from 'chai';
 
 
-function createMapper(entityTypes: Array<EntityType<any>> = []): JsonApiMapper
+function createMapper(columnTypes: any = {}, entityTypes: Array<EntityType<any>> = []): JsonApiMapper
 {
 	const loader = new JsonApiEntityMetadataLoader;
-	const config = new JsonApiConfiguration(loader, 'localhost', entityTypes);
+	const config = new JsonApiConfiguration(loader, 'localhost', columnTypes, entityTypes);
 
 	return new JsonApiMapper(config);
 }
@@ -32,7 +32,7 @@ describe('#Mapping/JsonApiMapper', () => {
 
 			}
 
-			const mapper = createMapper([
+			const mapper = createMapper({}, [
 				User,
 			]);
 
@@ -65,7 +65,7 @@ describe('#Mapping/JsonApiMapper', () => {
 
 			}
 
-			const mapper = createMapper([
+			const mapper = createMapper({}, [
 				User,
 			]);
 
@@ -92,7 +92,7 @@ describe('#Mapping/JsonApiMapper', () => {
 
 			}
 
-			const mapper = createMapper([
+			const mapper = createMapper({}, [
 				User,
 			]);
 
@@ -130,7 +130,7 @@ describe('#Mapping/JsonApiMapper', () => {
 
 			}
 
-			const mapper = createMapper([
+			const mapper = createMapper({}, [
 				User,
 			]);
 
@@ -173,7 +173,7 @@ describe('#Mapping/JsonApiMapper', () => {
 
 			}
 
-			const mapper = createMapper([
+			const mapper = createMapper({}, [
 				User,
 			]);
 
@@ -217,7 +217,7 @@ describe('#Mapping/JsonApiMapper', () => {
 
 			}
 
-			const mapper = createMapper([
+			const mapper = createMapper({}, [
 				Role,
 				User,
 			]);
@@ -268,7 +268,7 @@ describe('#Mapping/JsonApiMapper', () => {
 
 			}
 
-			const mapper = createMapper([
+			const mapper = createMapper({}, [
 				Role,
 				User,
 			]);
@@ -323,7 +323,7 @@ describe('#Mapping/JsonApiMapper', () => {
 
 			}
 
-			const mapper = createMapper([
+			const mapper = createMapper({}, [
 				User,
 			]);
 
@@ -353,6 +353,48 @@ describe('#Mapping/JsonApiMapper', () => {
 			expect(users[1]).to.be.an.instanceOf(User);
 			expect(users[1].id).to.be.equal(10);
 			expect(users[1].name).to.be.equal('Doe John');
+		});
+
+		it('should map custom column type', () => {
+			@Entity({
+				type: 'user',
+			})
+			class User
+			{
+
+				@Id()
+				public id: number;
+
+				@Column({
+					type: 'userName',
+				})
+				public name: string;
+
+			}
+
+			function userNameType(name: string): string
+			{
+				return name.split('').reverse().join('');
+			}
+
+			const mapper = createMapper({
+				userName: userNameType,
+			}, [
+				User,
+			]);
+
+			const user = mapper.mapItem<User>({
+				type: 'user',
+				id: 5,
+				data: {
+					name: 'John Doe',
+				},
+				relationships: {},
+			});
+
+			expect(user).to.be.an.instanceOf(User);
+			expect(user.id).to.be.equal(5);
+			expect(user.name).to.be.equal('eoD nhoJ');
 		});
 
 	});

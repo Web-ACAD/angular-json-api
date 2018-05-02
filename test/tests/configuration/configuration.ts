@@ -4,10 +4,10 @@ import {JsonApiConfiguration, JsonApiEntityMetadataLoader, EntityType, Entity, I
 import {expect} from 'chai';
 
 
-function createConfig(url: string = 'localhost', entityTypes: Array<EntityType<any>> = []): JsonApiConfiguration
+function createConfig(url: string = 'localhost', columnTypes: any = {}, entityTypes: Array<EntityType<any>> = []): JsonApiConfiguration
 {
 	const loader = new JsonApiEntityMetadataLoader;
-	return new JsonApiConfiguration(loader, url, entityTypes);
+	return new JsonApiConfiguration(loader, url, columnTypes, entityTypes);
 }
 
 
@@ -17,6 +17,29 @@ describe('#Configuration/JsonApiConfiguration', () => {
 
 		it('should return configured url', () => {
 			expect(createConfig('localhost').getUrl()).to.be.equal('localhost');
+		});
+
+	});
+
+	describe('getColumnType()', () => {
+
+		it('should throw an error if type is not defined', () => {
+			expect(() => {
+				createConfig().getColumnType('date');
+			}).to.throw(Error, 'ApiConfiguration: column type date does not exists.');
+		});
+
+		it('should return registered type', () => {
+			function testType(data: any): any
+			{
+				return data;
+			}
+
+			const config = createConfig(undefined, {
+				test: testType,
+			});
+
+			expect(config.getColumnType('test')).to.be.equal(testType);
 		});
 
 	});
@@ -35,7 +58,7 @@ describe('#Configuration/JsonApiConfiguration', () => {
 
 			}
 
-			const config = createConfig(undefined, [
+			const config = createConfig(undefined, {}, [
 				User,
 			]);
 

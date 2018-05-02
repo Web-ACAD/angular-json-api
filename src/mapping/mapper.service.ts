@@ -35,11 +35,19 @@ export class JsonApiMapper
 
 		for (let key in mapping.columns) {
 			if (mapping.columns.hasOwnProperty(key)) {
-				if (typeof data.data[key] === 'undefined') {
-					throw new Error(`Api: missing ${key} in loaded data for ${stringify(mapping.entityType)} entity.`);
+				const column = mapping.columns[key];
+
+				if (typeof data.data[column.property] === 'undefined') {
+					throw new Error(`Api: missing ${column.property} in loaded data for ${stringify(mapping.entityType)} entity.`);
 				}
 
-				entity[mapping.columns[key].property] = data.data[key];
+				let columnValue = data.data[column.property];
+
+				if (column.type !== null) {
+					columnValue = this.$config.getColumnType(column.type)(columnValue);
+				}
+
+				entity[column.property] = columnValue;
 			}
 		}
 

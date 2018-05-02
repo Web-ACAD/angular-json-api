@@ -10,6 +10,7 @@ export declare interface EntityOptions
 export declare interface ColumnOptions
 {
 	name?: string,
+	type?: string,
 }
 
 
@@ -44,6 +45,7 @@ export function Column(options: ColumnOptions = {}): any
 		addColumn(target, {
 			name: options.name || prop,
 			property: prop,
+			type: options.type || null,
 		});
 	};
 }

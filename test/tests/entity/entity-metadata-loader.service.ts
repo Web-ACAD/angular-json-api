@@ -63,6 +63,7 @@ describe('#Entity/JsonApiEntityMetadataLoader', () => {
 					title: {
 						name: 'title',
 						property: 'title',
+						type: null,
 					},
 				},
 				relationships: {
@@ -100,6 +101,7 @@ describe('#Entity/JsonApiEntityMetadataLoader', () => {
 
 				@Column({
 					name: '_title',
+					type: 'custom',
 				})
 				public title: string;
 
@@ -113,6 +115,7 @@ describe('#Entity/JsonApiEntityMetadataLoader', () => {
 					_title: {
 						name: '_title',
 						property: 'title',
+						type: 'custom',
 					},
 				},
 				relationships: {
