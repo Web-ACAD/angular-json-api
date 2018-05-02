@@ -1,4 +1,4 @@
-import {EntityType, JSON_API_ENTITY_METADATA} from './entity-metadata-loader.service';
+import {EntityType, JSON_API_ENTITY_METADATA, ColumnMetadata, RelationshipMetadata} from './entity-metadata-loader.service';
 
 
 export declare interface EntityOptions
@@ -7,12 +7,23 @@ export declare interface EntityOptions
 }
 
 
+export declare interface ColumnOptions
+{
+	name?: string,
+}
+
+
+export declare interface RelationshipOptions
+{
+	name?: string,
+}
+
+
 export function Entity(options: EntityOptions): any
 {
 	return function(target: EntityType<any>): void
 	{
-		initEntityMetadata(target);
-		target[JSON_API_ENTITY_METADATA].type = options.type;
+		setEntityType(target, options.type);
 	};
 }
 
@@ -21,29 +32,60 @@ export function Id(): any
 {
 	return function(target: any, prop: string): void
 	{
-		initEntityMetadata(target.constructor);
-		target.constructor[JSON_API_ENTITY_METADATA].id = prop;
+		setIdProperty(target, prop);
 	};
 }
 
 
-export function Column(columnName?: string): any
+export function Column(options: ColumnOptions = {}): any
 {
 	return function(target: any, prop: string): void
 	{
-		initEntityMetadata(target.constructor);
-		target.constructor[JSON_API_ENTITY_METADATA].columns[columnName || prop] = prop;
+		addColumn(target, {
+			name: options.name || prop,
+			property: prop,
+		});
 	};
 }
 
 
-export function Relationship(include?: string): any
+export function Relationship(options: RelationshipOptions = {}): any
 {
 	return function(target: any, prop: string): void
 	{
-		initEntityMetadata(target.constructor);
-		target.constructor[JSON_API_ENTITY_METADATA].relationships[include || prop] = prop;
+		addRelationship(target, {
+			name: options.name || prop,
+			property: prop,
+		});
 	};
+}
+
+
+function setEntityType(target: EntityType<any>, type: string): void
+{
+	initEntityMetadata(target);
+	target[JSON_API_ENTITY_METADATA].type = type;
+}
+
+
+function setIdProperty(target: any, property: string): void
+{
+	initEntityMetadata(target.constructor);
+	target.constructor[JSON_API_ENTITY_METADATA].id = property;
+}
+
+
+function addColumn(target: any, metadata: ColumnMetadata): void
+{
+	initEntityMetadata(target.constructor);
+	target.constructor[JSON_API_ENTITY_METADATA].columns[metadata.name] = metadata;
+}
+
+
+function addRelationship(target: any, metadata: RelationshipMetadata): void
+{
+	initEntityMetadata(target.constructor);
+	target.constructor[JSON_API_ENTITY_METADATA].relationships[metadata.name] = metadata;
 }
 
 

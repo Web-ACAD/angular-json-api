@@ -60,11 +60,20 @@ describe('#Entity/JsonApiEntityMetadataLoader', () => {
 				type: 'chapter',
 				id: 'id',
 				columns: {
-					title: 'title',
+					title: {
+						name: 'title',
+						property: 'title',
+					},
 				},
 				relationships: {
-					book: 'book',
-					comments: 'comments',
+					book: {
+						name: 'book',
+						property: 'book',
+					},
+					comments: {
+						name: 'comments',
+						property: 'comments',
+					},
 				},
 			});
 		});
@@ -79,13 +88,19 @@ describe('#Entity/JsonApiEntityMetadataLoader', () => {
 				@Id()
 				public id: number;
 
-				@Relationship('_book')
+				@Relationship({
+					name: '_book',
+				})
 				public book: any;
 
-				@Relationship('_comments')
+				@Relationship({
+					name: '_comments',
+				})
 				public comments: Array<any>;
 
-				@Column('_title')
+				@Column({
+					name: '_title',
+				})
 				public title: string;
 
 			}
@@ -95,11 +110,20 @@ describe('#Entity/JsonApiEntityMetadataLoader', () => {
 				type: 'chapter',
 				id: 'id',
 				columns: {
-					_title: 'title',
+					_title: {
+						name: '_title',
+						property: 'title',
+					},
 				},
 				relationships: {
-					_book: 'book',
-					_comments: 'comments',
+					_book: {
+						name: '_book',
+						property: 'book',
+					},
+					_comments: {
+						name: '_comments',
+						property: 'comments',
+					},
 				},
 			});
 		});

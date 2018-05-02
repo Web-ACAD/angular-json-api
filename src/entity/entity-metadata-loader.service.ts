@@ -18,13 +18,27 @@ export interface EntityType<T> extends Function
 export const JSON_API_ENTITY_METADATA = '__wa_json_api_entity_metadata__';
 
 
-export declare interface JsonApiEntityMetadata<T>
+export declare interface ColumnMetadata
+{
+	name: string,
+	property: string,
+}
+
+
+export declare interface RelationshipMetadata
+{
+	name: string,
+	property: string,
+}
+
+
+export declare interface EntityMetadata<T>
 {
 	entityType: EntityType<T>,
 	type: string,
 	id: string,
-	columns: {[name: string]: string},
-	relationships: {[name: string]: string},
+	columns: {[name: string]: ColumnMetadata},
+	relationships: {[name: string]: RelationshipMetadata},
 }
 
 
@@ -33,13 +47,13 @@ export class JsonApiEntityMetadataLoader
 {
 
 
-	public getMetadata<T>(entityType: EntityType<T>): JsonApiEntityMetadata<T>
+	public getMetadata<T>(entityType: EntityType<T>): EntityMetadata<T>
 	{
 		if (!entityType[JSON_API_ENTITY_METADATA]) {
 			throw new Error(`JsonApi: missing @Entity() decorator on ${stringify(entityType)} class.`);
 		}
 
-		const metadata: JsonApiEntityMetadata<T> = entityType[JSON_API_ENTITY_METADATA];
+		const metadata: EntityMetadata<T> = entityType[JSON_API_ENTITY_METADATA];
 
 		if (!metadata.id) {
 			throw new Error(`JsonApi: missing @Id() decorator on ${stringify(entityType)} class.`);

@@ -56,19 +56,28 @@ export class User
     @Id()
     public readonly id: string;
     
-    @Column('name')
+    @Column({
+        name: 'name',
+    })
     public readonly name: string;
     
-    @Relationship('roles')
+    @Relationship({
+        name: 'roles',
+    })
     public roles: Array<Role>;
 
 }
 ```
 
-It's not necessary to provide any arguments for `@Column()` and `@Relationship()` decorators if the argument is same as 
-the property name they are attached to.
+**`@Column()` options:**
 
-These arguments are names of data keys in the API response.
+* `name`: name of key in json data source. Default value is the name of property.
+
+**`@Relationship()` options:**
+
+* `name`: name of key in json data source. Default value is the name of property.
+
+**Register in app:**
 
 Last thing is to update the API configuration for your app:
 

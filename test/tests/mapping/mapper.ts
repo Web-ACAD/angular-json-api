@@ -210,7 +210,9 @@ describe('#Mapping/JsonApiMapper', () => {
 				@Id()
 				public id: number;
 
-				@Relationship('role')
+				@Relationship({
+					name: 'role',
+				})
 				public role: Role;
 
 			}
@@ -259,7 +261,9 @@ describe('#Mapping/JsonApiMapper', () => {
 				@Id()
 				public id: number;
 
-				@Relationship('roles')
+				@Relationship({
+					name: 'roles',
+				})
 				public roles: Array<Role>;
 
 			}

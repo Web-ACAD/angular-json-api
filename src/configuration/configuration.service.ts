@@ -1,11 +1,11 @@
-import {JsonApiEntityMetadata, EntityType, JsonApiEntityMetadataLoader} from '../entity/index';
+import {EntityMetadata, EntityType, JsonApiEntityMetadataLoader} from '../entity/index';
 
 
 export class JsonApiConfiguration
 {
 
 
-	private mappings: {[type: string]: JsonApiEntityMetadata<any>} = {};
+	private mappings: {[type: string]: EntityMetadata<any>} = {};
 
 
 	constructor(
@@ -25,7 +25,7 @@ export class JsonApiConfiguration
 	}
 
 
-	public getMapping(type: string): JsonApiEntityMetadata<any>
+	public getMapping(type: string): EntityMetadata<any>
 	{
 		if (typeof this.mappings[type] === 'undefined') {
 			throw new Error(`ApiConfiguration: mapping ${type} does not exists.`);

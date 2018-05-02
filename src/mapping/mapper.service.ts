@@ -39,13 +39,13 @@ export class JsonApiMapper
 					throw new Error(`Api: missing ${key} in loaded data for ${stringify(mapping.entityType)} entity.`);
 				}
 
-				entity[mapping.columns[key]] = data.data[key];
+				entity[mapping.columns[key].property] = data.data[key];
 			}
 		}
 
 		for (let key in mapping.relationships) {
 			if (mapping.relationships.hasOwnProperty(key)) {
-				entity[mapping.relationships[key]] = typeof data.relationships[key] === 'undefined' ?
+				entity[mapping.relationships[key].property] = typeof data.relationships[key] === 'undefined' ?
 					undefined :
 					this.map(data.relationships[key])
 				;
