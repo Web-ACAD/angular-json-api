@@ -1,6 +1,6 @@
 import '../../bootstrap';
 
-import {Entity, Id, Column, Relationship, JsonApiConfiguration, JsonApiEntityMetadataLoader, JsonApiMapper, EntityType} from '../../../src';
+import {Entity, Id, Optional, Column, Relationship, JsonApiConfiguration, JsonApiEntityMetadataLoader, JsonApiMapper, EntityType} from '../../../src';
 import {expect} from 'chai';
 
 
@@ -395,6 +395,38 @@ describe('#Mapping/JsonApiMapper', () => {
 			expect(user).to.be.an.instanceOf(User);
 			expect(user.id).to.be.equal(5);
 			expect(user.name).to.be.equal('eoD nhoJ');
+		});
+
+		it('should not map optional column', () => {
+			@Entity({
+				type: 'user',
+			})
+			class User
+			{
+
+				@Id()
+				public id: number;
+
+				@Column()
+				@Optional()
+				public name: string;
+
+			}
+
+			const mapper = createMapper({}, [
+				User,
+			]);
+
+			const user = mapper.mapItem<User>({
+				type: 'user',
+				id: 5,
+				data: {},
+				relationships: {},
+			});
+
+			expect(user).to.be.an.instanceOf(User);
+			expect(user.id).to.be.equal(5);
+			expect(user.name).to.be.equal(undefined);
 		});
 
 	});

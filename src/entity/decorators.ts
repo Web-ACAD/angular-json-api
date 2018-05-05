@@ -38,6 +38,15 @@ export function Id(): any
 }
 
 
+export function Optional(): any
+{
+	return function(target: any, prop: string): void
+	{
+		addOptional(target, prop);
+	};
+}
+
+
 export function Column(options: ColumnOptions = {}): any
 {
 	return function(target: any, prop: string): void
@@ -77,6 +86,13 @@ function setIdProperty(target: any, property: string): void
 }
 
 
+function addOptional(target: any, property: string): void
+{
+	initEntityMetadata(target.constructor);
+	target.constructor[JSON_API_ENTITY_METADATA].optional.push(property);
+}
+
+
 function addColumn(target: any, metadata: ColumnMetadata): void
 {
 	initEntityMetadata(target.constructor);
@@ -100,6 +116,7 @@ function initEntityMetadata(entityType: EntityType<any>): void
 			id: undefined,
 			columns: {},
 			relationships: {},
+			optional: [],
 		};
 	}
 }

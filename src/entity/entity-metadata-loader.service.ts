@@ -40,6 +40,7 @@ export declare interface EntityMetadata<T>
 	id: string,
 	columns: {[name: string]: ColumnMetadata},
 	relationships: {[name: string]: RelationshipMetadata},
+	optional: Array<string>,
 }
 
 

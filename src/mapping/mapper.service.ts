@@ -38,6 +38,10 @@ export class JsonApiMapper
 				const column = mapping.columns[key];
 
 				if (typeof data.data[column.property] === 'undefined') {
+					if (mapping.optional.indexOf(column.property) >= 0) {
+						continue;
+					}
+
 					throw new Error(`Api: missing ${column.property} in loaded data for ${stringify(mapping.entityType)} entity.`);
 				}
 

@@ -68,6 +68,7 @@ describe('#Configuration/JsonApiConfiguration', () => {
 				id: 'id',
 				columns: {},
 				relationships: {},
+				optional: [],
 			});
 		});
 

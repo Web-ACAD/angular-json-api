@@ -76,6 +76,7 @@ describe('#Entity/JsonApiEntityMetadataLoader', () => {
 						property: 'comments',
 					},
 				},
+				optional: [],
 			});
 		});
 
@@ -128,6 +129,7 @@ describe('#Entity/JsonApiEntityMetadataLoader', () => {
 						property: 'comments',
 					},
 				},
+				optional: [],
 			});
 		});
 

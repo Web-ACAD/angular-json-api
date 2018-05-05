@@ -210,6 +210,28 @@ class Article
 }
 ```
 
+## Optional column
+
+If some column data is missing in the API json, this library will throw an exception. This behavior can be disabled by 
+marking the column as optional. Just add the `@Optional()` decorator:
+
+```typescript
+@Entity({
+    type: 'article',
+})
+class Article
+{
+
+    @Id()
+    public readonly id: string;
+
+    @Column()
+    @Optional()
+    public readonly author: any;
+
+}
+```
+
 ## Mapping to entities
 
 If you use the methods above for accessing your API, the returned data will be automatically mapped to the correct 
