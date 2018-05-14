@@ -229,7 +229,7 @@ First define transformer function:
 ```typescript
 function dateTimeFromTimestamp(timestamp: number): Date
 {
-	return new Date(timestamp * 1000);
+    return new Date(timestamp * 1000);
 }
 ``` 
 
@@ -247,7 +247,7 @@ class Article
 
     @Column({
         transformers: [
-        	dateTimeFromTimestamp,
+            dateTimeFromTimestamp,
         ],
     })
     public readonly createdAt: Date;
