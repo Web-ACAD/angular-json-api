@@ -64,6 +64,7 @@ describe('#Entity/JsonApiEntityMetadataLoader', () => {
 						name: 'title',
 						property: 'title',
 						type: null,
+						transformers: [],
 					},
 				},
 				relationships: {
@@ -117,6 +118,7 @@ describe('#Entity/JsonApiEntityMetadataLoader', () => {
 						name: '_title',
 						property: 'title',
 						type: 'custom',
+						transformers: [],
 					},
 				},
 				relationships: {

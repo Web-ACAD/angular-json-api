@@ -1,4 +1,6 @@
-import {EntityType, JSON_API_ENTITY_METADATA, ColumnMetadata, RelationshipMetadata} from './entity-metadata-loader.service';
+import {
+	EntityType, JSON_API_ENTITY_METADATA, ColumnMetadata, RelationshipMetadata, ColumnTransformer,
+} from './entity-metadata-loader.service';
 
 
 export declare interface EntityOptions
@@ -11,6 +13,7 @@ export declare interface ColumnOptions
 {
 	name?: string,
 	type?: string,
+	transformers?: Array<ColumnTransformer>,
 }
 
 
@@ -55,6 +58,7 @@ export function Column(options: ColumnOptions = {}): any
 			name: options.name || prop,
 			property: prop,
 			type: options.type || null,
+			transformers: options.transformers || [],
 		});
 	};
 }

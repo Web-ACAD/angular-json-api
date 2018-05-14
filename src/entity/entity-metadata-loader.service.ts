@@ -18,11 +18,15 @@ export interface EntityType<T> extends Function
 export const JSON_API_ENTITY_METADATA = '__wa_json_api_entity_metadata__';
 
 
+export declare type ColumnTransformer = (data: any) => any;
+
+
 export declare interface ColumnMetadata
 {
 	name: string,
 	property: string,
 	type: string|null,
+	transformers: Array<ColumnTransformer>,
 }
 
 

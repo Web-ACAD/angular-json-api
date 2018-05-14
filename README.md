@@ -216,6 +216,50 @@ class Article
 }
 ```
 
+## Column transformers
+
+Column transformers are similar to column types described above. But where column types are global, column transformers
+are local.
+
+You may have some entity which has a unique way of handling one of it's columns. One option is to create the getter and 
+setter for such column, but that just makes the code less readable. Better option is to use column transformer:
+
+First define transformer function:
+
+```typescript
+function dateTimeFromTimestamp(timestamp: number): Date
+{
+	return new Date(timestamp * 1000);
+}
+``` 
+
+Second used it in your entity:
+
+```typescript
+@Entity({
+    type: 'article',
+})
+class Article
+{
+
+    @Id()
+    public readonly id: string;
+
+    @Column({
+        transformers: [
+        	dateTimeFromTimestamp,
+        ],
+    })
+    public readonly createdAt: Date;
+
+}
+```
+
+As you can see, the `transformers` option accepts an array. That means that you can attach multiple transformers to one 
+column. In that case the first transformer will be applied first on mapping.
+
+If the column has `type` option too, the `transformers` option will be applied **after** type mapping.
+
 ## Optional column
 
 If some column data is missing in the API json, this library will throw an exception. This behavior can be disabled by 

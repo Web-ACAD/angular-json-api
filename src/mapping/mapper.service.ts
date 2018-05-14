@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {stringify, extend} from '../utils/index';
 import {JsonApiNormalizedResource} from '../normalizer/index';
 import {JsonApiConfiguration} from '../configuration/index';
-import {EntityType} from '../entity/index';
+import {ColumnMetadata, EntityType} from '../entity/index';
 
 
 @Injectable()
@@ -35,7 +35,7 @@ export class JsonApiMapper
 
 		for (let key in mapping.columns) {
 			if (mapping.columns.hasOwnProperty(key)) {
-				const column = mapping.columns[key];
+				const column: ColumnMetadata = mapping.columns[key];
 
 				if (typeof data.data[column.property] === 'undefined') {
 					if (mapping.optional.indexOf(column.property) >= 0) {
@@ -49,6 +49,10 @@ export class JsonApiMapper
 
 				if (column.type !== null) {
 					columnValue = this.$config.getColumnType(column.type)(columnValue);
+				}
+
+				for (let transformer of column.transformers) {
+					columnValue = transformer(columnValue);
 				}
 
 				entity[column.property] = columnValue;

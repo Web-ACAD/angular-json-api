@@ -304,57 +304,6 @@ describe('#Mapping/JsonApiMapper', () => {
 			expect(user.roles[1].id).to.be.equal(20);
 		});
 
-	});
-
-	describe('mapCollection()', () => {
-
-		it('should map a collection', () => {
-			@Entity({
-				type: 'user',
-			})
-			class User
-			{
-
-				@Id()
-				public id: number;
-
-				@Column()
-				public name: string;
-
-			}
-
-			const mapper = createMapper({}, [
-				User,
-			]);
-
-			const users = mapper.mapCollection<User>([
-				{
-					type: 'user',
-					id: 5,
-					data: {
-						name: 'John Doe',
-					},
-					relationships: {},
-				},
-				{
-					type: 'user',
-					id: 10,
-					data: {
-						name: 'Doe John',
-					},
-					relationships: {},
-				},
-			]);
-
-			expect(users).to.have.length(2);
-			expect(users[0]).to.be.an.instanceOf(User);
-			expect(users[0].id).to.be.equal(5);
-			expect(users[0].name).to.be.equal('John Doe');
-			expect(users[1]).to.be.an.instanceOf(User);
-			expect(users[1].id).to.be.equal(10);
-			expect(users[1].name).to.be.equal('Doe John');
-		});
-
 		it('should map custom column type', () => {
 			@Entity({
 				type: 'user',
@@ -427,6 +376,107 @@ describe('#Mapping/JsonApiMapper', () => {
 			expect(user).to.be.an.instanceOf(User);
 			expect(user.id).to.be.equal(5);
 			expect(user.name).to.be.equal(undefined);
+		});
+
+		it('should map column transformers', () => {
+			function add(num: number): number
+			{
+				return num + 1;
+			}
+
+			function multiply(num: number): number
+			{
+				return num * 10;
+			}
+
+			@Entity({
+				type: 'user',
+			})
+			class User
+			{
+
+				@Id()
+				public id: number;
+
+				@Column({
+					transformers: [
+						add,
+						add,
+						add,
+						multiply,
+					],
+				})
+				public counter: number;
+
+			}
+
+			const mapper = createMapper({}, [
+				User,
+			]);
+
+			const user = mapper.mapItem<User>({
+				type: 'user',
+				id: 5,
+				data: {
+					counter: 0,
+				},
+				relationships: {},
+			});
+
+			expect(user).to.be.an.instanceOf(User);
+			expect(user.id).to.be.equal(5);
+			expect(user.counter).to.be.equal(30);
+		});
+
+	});
+
+	describe('mapCollection()', () => {
+
+		it('should map a collection', () => {
+			@Entity({
+				type: 'user',
+			})
+			class User
+			{
+
+				@Id()
+				public id: number;
+
+				@Column()
+				public name: string;
+
+			}
+
+			const mapper = createMapper({}, [
+				User,
+			]);
+
+			const users = mapper.mapCollection<User>([
+				{
+					type: 'user',
+					id: 5,
+					data: {
+						name: 'John Doe',
+					},
+					relationships: {},
+				},
+				{
+					type: 'user',
+					id: 10,
+					data: {
+						name: 'Doe John',
+					},
+					relationships: {},
+				},
+			]);
+
+			expect(users).to.have.length(2);
+			expect(users[0]).to.be.an.instanceOf(User);
+			expect(users[0].id).to.be.equal(5);
+			expect(users[0].name).to.be.equal('John Doe');
+			expect(users[1]).to.be.an.instanceOf(User);
+			expect(users[1].id).to.be.equal(10);
+			expect(users[1].name).to.be.equal('Doe John');
 		});
 
 	});
