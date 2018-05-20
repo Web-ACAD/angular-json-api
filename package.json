@@ -1,7 +1,7 @@
 {
 	"name": "@webacad/angular-json-api",
 	"description": "Angular module for working with data from standardized json api",
-	"version": "4.2.0",
+	"version": "4.3.0",
 	"keywords": [
 		"angular",
 		"json",
