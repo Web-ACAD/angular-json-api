@@ -136,8 +136,8 @@ entities.
 **Methods:**
 
 * `get<T>(url: string, options: JsonApiRequestOptions = {}): Observable<T>`
-* `post<T>(url: string, body: any, options: JsonApiRequestOptions = {}): Observable<T>`
-* `put<T>(url: string, body: any, options: JsonApiRequestOptions = {}): Observable<T>`
+* `post<T>(url: string, body: any|Observable<any>, options: JsonApiRequestOptions = {}): Observable<T>`
+* `put<T>(url: string, body: any|Observable<any>, options: JsonApiRequestOptions = {}): Observable<T>`
 * `delete<T>(url: string, options: JsonApiRequestOptions = {}): Observable<T>`
 
 **Options:**

@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
-import {map} from 'rxjs/operators';
+import {Observable} from 'rxjs';
+import {of as ObservableOf} from 'rxjs/observable/of';
+import {map, mergeMap} from 'rxjs/operators';
 
 import {JsonApiConfiguration} from '../configuration/index';
 import {JsonApiNormalizer} from '../normalizer/index';
@@ -39,11 +40,15 @@ export class JsonApiClient
 	}
 
 
-	public put<T = any>(url: string, body: any, options: JsonApiRequestOptions = {}): Observable<T>
+	public put<T = any>(url: string, body: any|Observable<any>, options: JsonApiRequestOptions = {}): Observable<T>
 	{
-		return this.transformPipe<T>(
-			this.$http.put<T>(this.url(url, options), body),
-			options.transform,
+		return this.bodyToObservable(body).pipe(
+			mergeMap((observableBody) => {
+				return this.transformPipe<T>(
+					this.$http.put<T>(this.url(url, options), observableBody),
+					options.transform,
+				);
+			}),
 		);
 	}
 
@@ -59,9 +64,13 @@ export class JsonApiClient
 
 	public post<T = any>(url: string, body: any, options: JsonApiRequestOptions = {}): Observable<T>
 	{
-		return this.transformPipe<T>(
-			this.$http.post<T>(this.url(url, options), body),
-			options.transform,
+		return this.bodyToObservable(body).pipe(
+			mergeMap((observableBody) => {
+				return this.transformPipe<T>(
+					this.$http.post<T>(this.url(url, options), observableBody),
+					options.transform,
+				);
+			}),
 		);
 	}
 
@@ -88,6 +97,16 @@ export class JsonApiClient
 		}
 
 		return createUrl(`${this.$config.getUrl()}/${url}`, parameters);
+	}
+
+
+	private bodyToObservable(body: any|Observable<any>): Observable<any>
+	{
+		if (body instanceof Observable) {
+			return body;
+		}
+
+		return ObservableOf(body);
 	}
 
 }
