@@ -61,7 +61,7 @@ export class JsonApiMapper
 
 		for (let key in mapping.relationships) {
 			if (mapping.relationships.hasOwnProperty(key)) {
-				entity[mapping.relationships[key].property] = typeof data.relationships[key] === 'undefined' ?
+				entity[mapping.relationships[key].property] = typeof data.relationships[key] === 'undefined' || data.relationships[key] === null ?
 					undefined :
 					this.map(data.relationships[key])
 				;

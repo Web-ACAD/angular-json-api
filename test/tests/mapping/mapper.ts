@@ -304,6 +304,51 @@ describe('#Mapping/JsonApiMapper', () => {
 			expect(user.roles[1].id).to.be.equal(20);
 		});
 
+		it('should not map nullable collection', () => {
+			@Entity({
+				type: 'role',
+			})
+			class Role
+			{
+
+				@Id()
+				public id: number;
+
+			}
+
+			@Entity({
+				type: 'user',
+			})
+			class User
+			{
+
+				@Id()
+				public id: number;
+
+				@Relationship()
+				public role: Role|undefined;
+
+			}
+
+			const mapper = createMapper({}, [
+				Role,
+				User,
+			]);
+
+			const user = mapper.mapItem<User>({
+				type: 'user',
+				id: 5,
+				data: {},
+				relationships: {
+					role: null,
+				},
+			});
+
+			expect(user).to.be.an.instanceOf(User);
+			expect(user.id).to.be.equal(5);
+			expect(user.role).to.be.equal(undefined);
+		});
+
 		it('should map custom column type', () => {
 			@Entity({
 				type: 'user',
