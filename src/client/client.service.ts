@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {of as ObservableOf} from 'rxjs/observable/of';
+import {of as ObservableOf} from 'rxjs';
 import {map, mergeMap} from 'rxjs/operators';
 
 import {JsonApiConfiguration} from '../configuration/index';

@@ -7,19 +7,15 @@ Angular module for working with data from standardized json api
 
 ## Installation
 
+**Version >= 5.0.0 depends on angular >= 6. For older versions of angular use @webacad/angular-json-api@^4.0.**
+
 ```bash
-$ npm install --save @angular/common@^5.0
-$ npm install --save @angular/core@^5.0
-$ npm install --save rxjs@^5.5.0
 $ npm install --save @webacad/angular-json-api
 ```
 
 or with yarn
 
 ```bash
-$ yarn add @angular/common@^5.0
-$ yarn add @angular/core@^5.0
-$ yarn add rxjs@^5.5.0
 $ yarn add @webacad/angular-json-api
 ```
 
