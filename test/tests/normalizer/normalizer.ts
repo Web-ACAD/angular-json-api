@@ -205,6 +205,52 @@ describe('#Normalizer/JsonApiNormalizer', () => {
 			]);
 		});
 
+		it('should normalize relationship from data', () => {
+			expect(normalizer.normalizeCollection({
+				data: [
+					{
+						type: 'role',
+						id: 1,
+						attributes: {},
+						relationships: {
+							parent: {
+								data: {
+									type: 'role',
+									id: 2,
+								},
+							},
+						},
+					},
+					{
+						type: 'role',
+						id: 2,
+						attributes: {},
+						relationships: {},
+					},
+				],
+			})).to.be.eql([
+				{
+					type: 'role',
+					id: 1,
+					data: {},
+					relationships: {
+						parent: {
+							type: 'role',
+							id: 2,
+							data: {},
+							relationships: {},
+						},
+					},
+				},
+				{
+					type: 'role',
+					id: 2,
+					data: {},
+					relationships: {},
+				},
+			]);
+		});
+
 	});
 
 	describe('normalize()', () => {

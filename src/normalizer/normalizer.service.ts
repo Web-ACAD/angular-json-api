@@ -39,9 +39,10 @@ export class JsonApiNormalizer
 	{
 		const list = <Array<JsonApiResource>>data.data;
 		const resources: Array<JsonApiNormalizedResource> = [];
+		const included: Array<JsonApiResource> = data.included ? [...list, ...data.included] : [...list];
 
 		for (let i = 0; i < list.length; i++) {
-			resources.push(this.normalizeResource(list[i], data.included || []));
+			resources.push(this.normalizeResource(list[i], included || []));
 		}
 
 		return resources;
