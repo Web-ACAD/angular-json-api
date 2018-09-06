@@ -148,6 +148,41 @@ describe('#Mapping/JsonApiMapper', () => {
 			expect(user.name).to.be.equal('John Doe');
 		});
 
+		it('should map custom column name', () => {
+			@Entity({
+				type: 'user',
+			})
+			class User
+			{
+
+				@Id()
+				public id: number;
+
+				@Column({
+					name: '_name',
+				})
+				public name: string;
+
+			}
+
+			const mapper = createMapper({}, [
+				User,
+			]);
+
+			const user = mapper.mapItem<User>({
+				type: 'user',
+				id: 5,
+				data: {
+					_name: 'John Doe',
+				},
+				relationships: {},
+			});
+
+			expect(user).to.be.an.instanceOf(User);
+			expect(user.id).to.be.equal(5);
+			expect(user.name).to.be.equal('John Doe');
+		});
+
 		it('should map simple data to entity through setter', () => {
 			@Entity({
 				type: 'user',
