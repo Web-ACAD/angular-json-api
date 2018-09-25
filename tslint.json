@@ -27,7 +27,6 @@
 		"no-internal-module": true,
 		"no-namespace": true,
 		"no-non-null-assertion": true,
-		"no-unnecessary-type-assertion": true,
 		"typedef": [
 			true,
 			"call-signature",
