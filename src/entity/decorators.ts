@@ -1,11 +1,13 @@
 import {
 	EntityType, JSON_API_ENTITY_METADATA, ColumnMetadata, RelationshipMetadata, ColumnTransformer,
 } from './entity-metadata-loader.service';
+import {Mapper} from '../mapping/index';
 
 
 export declare interface EntityOptions
 {
 	type: string,
+	mapper?: Mapper,
 }
 
 
@@ -28,6 +30,10 @@ export function Entity(options: EntityOptions): any
 	return function(target: EntityType<any>): void
 	{
 		setEntityType(target, options.type);
+
+		if (typeof options.mapper !== 'undefined') {
+			setEntityMapper(target, options.mapper);
+		}
 	};
 }
 
@@ -80,6 +86,13 @@ function setEntityType(target: EntityType<any>, type: string): void
 {
 	initEntityMetadata(target);
 	target[JSON_API_ENTITY_METADATA].type = type;
+}
+
+
+function setEntityMapper(target: EntityType<any>, mapper: Mapper): void
+{
+	initEntityMetadata(target);
+	target[JSON_API_ENTITY_METADATA].mapper = mapper;
 }
 
 

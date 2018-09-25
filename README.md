@@ -284,3 +284,20 @@ If you use the methods above for accessing your API, the returned data will be a
 entity class.
 
 **When using auto mapping, the `constructor` is not called!**
+
+## Custom entity mapper
+
+```typescript
+@Entity({
+	type: 'article',
+	mapper: (mapping, data, config) {
+		// todo: create Article instance manually
+	},
+})
+class Article
+{
+	
+	// ...
+	
+}
+```

@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 
 import {stringify} from '../utils/index';
+import {Mapper} from '../mapping/index';
 
 
 export const EntityType = Function;
@@ -45,6 +46,7 @@ export declare interface EntityMetadata<T>
 	columns: {[name: string]: ColumnMetadata},
 	relationships: {[name: string]: RelationshipMetadata},
 	optional: Array<string>,
+	mapper?: Mapper,
 }
 
 

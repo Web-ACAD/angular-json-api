@@ -5,13 +5,13 @@ import {EntityMetadata, ColumnMetadata} from '../entity/index';
 import {createProxy} from './proxy-factory';
 
 
-export declare type Mapper = <T>(metadata: EntityMetadata<T>, data: JsonApiNormalizedResource, config: JsonApiConfiguration) => T;
+export declare type Mapper = <T>(metadata: EntityMetadata<T>, data: JsonApiNormalizedResource, config: JsonApiConfiguration) => T|any;
 
 
 export function mapItem<T>(config: JsonApiConfiguration, data: JsonApiNormalizedResource): T
 {
 	const mapping = config.getMapping(data.type);
-	const mapper = defaultMapper;
+	const mapper = mapping.mapper || defaultMapper;
 
 	return mapper(mapping, data, config);
 }
