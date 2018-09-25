@@ -6,7 +6,7 @@ import {map, mergeMap} from 'rxjs/operators';
 
 import {JsonApiConfiguration} from '../configuration/index';
 import {JsonApiNormalizer} from '../normalizer/index';
-import {JsonApiMapper} from '../mapping/index';
+import {mapData} from '../mapping/index';
 import {createUrl} from '../utils/index';
 
 
@@ -27,7 +27,6 @@ export class JsonApiClient
 		private $http: HttpClient,
 		private $config: JsonApiConfiguration,
 		private $normalizer: JsonApiNormalizer,
-		private $mapper: JsonApiMapper,
 	) {}
 
 
@@ -80,7 +79,7 @@ export class JsonApiClient
 		if (transform) {
 			return req.pipe(
 				map((data) => this.$normalizer.normalize(data)),
-				map((data) => this.$mapper.map<any>(data)),
+				map((data) => <any>mapData(this.$config, data)),
 			);
 		}
 

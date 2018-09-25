@@ -4,7 +4,6 @@ import {HttpClientModule} from '@angular/common/http';
 import {JsonApiNormalizer} from './normalizer/index';
 import {JsonApiClient} from './client/index';
 import {JsonApiEntityMetadataLoader} from './entity/index';
-import {JsonApiMapper} from './mapping/index';
 import {
 	JsonApiConfiguration, JsonApiRootModuleConfiguration, JSON_API_ROOT_MODULE_CONFIGURATION,
 	provideJsonApiRootConfiguration, JsonApiChildModuleConfiguration, JSON_API_CHILD_MODULE_CONFIGURATION,
@@ -28,7 +27,6 @@ export class JsonApiModule
 				JsonApiNormalizer,
 				JsonApiClient,
 				JsonApiEntityMetadataLoader,
-				JsonApiMapper,
 				{
 					provide: JSON_API_ROOT_MODULE_CONFIGURATION,
 					useValue: config,

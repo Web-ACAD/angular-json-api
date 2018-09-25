@@ -1,1 +1,2 @@
-export {JsonApiMapper} from './mapper.service';
+export {createProxy} from './proxy-factory';
+export {Mapper, mapCollection, mapItem, mapData, defaultMapper} from './mapping';
