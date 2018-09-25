@@ -1,6 +1,6 @@
 import '../../bootstrap';
 
-import {JsonApiConfiguration, JsonApiEntityMetadataLoader, EntityType, Entity, Id} from '../../../src';
+import {JsonApiConfiguration, JsonApiEntityMetadataLoader, EntityType, Entity, Id, Column} from '../../../src';
 import {expect} from 'chai';
 
 
@@ -70,6 +70,67 @@ describe('#Configuration/JsonApiConfiguration', () => {
 				relationships: {},
 				optional: [],
 			});
+		});
+
+		it('should register base and extended entity', () => {
+			@Entity({
+				type: 'user-base',
+			})
+			class BaseUser
+			{
+
+				@Id()
+				public id: number;
+
+			}
+
+			@Entity({
+				type: 'user',
+			})
+			class User extends BaseUser
+			{
+
+				@Column()
+				public name: string;
+
+			}
+
+			const config = createConfig(undefined, {}, [
+				BaseUser,
+				User,
+			]);
+
+			const mappingUserBase = config.getMapping('user-base');
+			const mappingUser = config.getMapping('user');
+
+			expect(mappingUserBase).to.be.eql({
+				entityType: BaseUser,
+				type: 'user-base',
+				id: 'id',
+				columns: {},
+				relationships: {},
+				optional: [],
+			});
+
+			expect(mappingUser).to.be.eql({
+				entityType: User,
+				type: 'user',
+				id: 'id',
+				columns: {
+					name: {
+						name: 'name',
+						property: 'name',
+						type: null,
+						transformers: [],
+					},
+				},
+				relationships: {},
+				optional: [],
+			});
+
+			expect(mappingUser.columns).to.not.be.equal(mappingUserBase.columns);
+			expect(mappingUser.relationships).to.not.be.equal(mappingUserBase.relationships);
+			expect(mappingUser.optional).to.not.be.equal(mappingUserBase.optional);
 		});
 
 	});

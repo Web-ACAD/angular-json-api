@@ -1,5 +1,5 @@
 import {
-	EntityType, JSON_API_ENTITY_METADATA, ColumnMetadata, RelationshipMetadata, ColumnTransformer,
+	EntityType, EntityMetadata, ColumnMetadata, RelationshipMetadata, ColumnTransformer, JSON_API_ENTITY_METADATA as _EM,
 } from './entity-metadata-loader.service';
 import {Mapper} from '../mapping/index';
 
@@ -29,10 +29,12 @@ export function Entity(options: EntityOptions): any
 {
 	return function(target: EntityType<any>): void
 	{
-		setEntityType(target, options.type);
+		const metadata = getEntityMetadata(target);
+
+		metadata.type = options.type;
 
 		if (typeof options.mapper !== 'undefined') {
-			setEntityMapper(target, options.mapper);
+			metadata.mapper = options.mapper;
 		}
 	};
 }
@@ -42,7 +44,8 @@ export function Id(): any
 {
 	return function(target: any, prop: string): void
 	{
-		setIdProperty(target, prop);
+		const metadata = getEntityMetadata(target.constructor);
+		metadata.id = prop;
 	};
 }
 
@@ -51,7 +54,8 @@ export function Optional(): any
 {
 	return function(target: any, prop: string): void
 	{
-		addOptional(target, prop);
+		const metadata = getEntityMetadata(target.constructor);
+		metadata.optional.push(prop);
 	};
 }
 
@@ -60,12 +64,15 @@ export function Column(options: ColumnOptions = {}): any
 {
 	return function(target: any, prop: string): void
 	{
-		addColumn(target, {
+		const metadata = getEntityMetadata(target.constructor);
+		const column: ColumnMetadata = {
 			name: options.name || prop,
 			property: prop,
 			type: options.type || null,
 			transformers: options.transformers || [],
-		});
+		};
+
+		metadata.columns[column.name] = column;
 	};
 }
 
@@ -74,60 +81,23 @@ export function Relationship(options: RelationshipOptions = {}): any
 {
 	return function(target: any, prop: string): void
 	{
-		addRelationship(target, {
+		const metadata = getEntityMetadata(target.constructor);
+		const relationship: RelationshipMetadata = {
 			name: options.name || prop,
 			property: prop,
-		});
+		};
+
+		metadata.relationships[relationship.name] = relationship;
 	};
 }
 
 
-function setEntityType(target: EntityType<any>, type: string): void
+function getEntityMetadata<T>(entityType: EntityType<T>): EntityMetadata<T>
 {
-	initEntityMetadata(target);
-	target[JSON_API_ENTITY_METADATA].type = type;
-}
+	const previousExist = typeof entityType[_EM] !== 'undefined';
 
-
-function setEntityMapper(target: EntityType<any>, mapper: Mapper): void
-{
-	initEntityMetadata(target);
-	target[JSON_API_ENTITY_METADATA].mapper = mapper;
-}
-
-
-function setIdProperty(target: any, property: string): void
-{
-	initEntityMetadata(target.constructor);
-	target.constructor[JSON_API_ENTITY_METADATA].id = property;
-}
-
-
-function addOptional(target: any, property: string): void
-{
-	initEntityMetadata(target.constructor);
-	target.constructor[JSON_API_ENTITY_METADATA].optional.push(property);
-}
-
-
-function addColumn(target: any, metadata: ColumnMetadata): void
-{
-	initEntityMetadata(target.constructor);
-	target.constructor[JSON_API_ENTITY_METADATA].columns[metadata.name] = metadata;
-}
-
-
-function addRelationship(target: any, metadata: RelationshipMetadata): void
-{
-	initEntityMetadata(target.constructor);
-	target.constructor[JSON_API_ENTITY_METADATA].relationships[metadata.name] = metadata;
-}
-
-
-function initEntityMetadata(entityType: EntityType<any>): void
-{
-	if (typeof entityType[JSON_API_ENTITY_METADATA] === 'undefined') {
-		entityType[JSON_API_ENTITY_METADATA] = {
+	if (!previousExist) {
+		entityType[_EM] = {
 			entityType: entityType,
 			type: undefined,
 			id: undefined,
@@ -135,5 +105,17 @@ function initEntityMetadata(entityType: EntityType<any>): void
 			relationships: {},
 			optional: [],
 		};
+
+	} else if (previousExist && entityType[_EM].entityType !== entityType) {
+		entityType[_EM] = {
+			entityType: entityType,
+			type: entityType[_EM].type,
+			id: entityType[_EM].id,
+			columns: {...entityType[_EM].columns},
+			relationships: {...entityType[_EM].relationships},
+			optional: [...entityType[_EM].optional],
+		};
 	}
+
+	return entityType[_EM];
 }
